@@ -1,0 +1,24 @@
+.cursor-pointer{
+    cursor: pointer;
+}
+
+.err-text-field{
+  color: #f64e60;
+  font-size: .8rem;
+  font-weight: 400;
+}
+
+.custom-loader {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: 
+      radial-gradient(farthest-side,#4C79ED 94%,#0000) top/8px 8px no-repeat,
+      conic-gradient(#0000 30%,#4C79ED);
+    -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 8px),#000 0);
+    animation:s3 1s infinite linear;
+  }
+  
+  @keyframes s3{ 
+    100%{transform: rotate(1turn)}
+  }
