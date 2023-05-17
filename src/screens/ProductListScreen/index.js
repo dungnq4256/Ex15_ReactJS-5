@@ -16,12 +16,9 @@ function ProductListScreen(props) {
     const [selectedProduct, setSelectedProduct] = useState({});
     const [editMode, setEditMode] = useState(false);
     const [isUpdated, setIsUpdated] = useState(false);
-    const [showModalCreateProduct, setShowModalCreateProduct] =
-        useState(false);
-    const [showModalDetailProduct, setShowModalDetailProduct] =
-        useState(false);
-    const [showModalDeleteProduct, setShowModalDeleteProduct] =
-        useState(false);
+    const [showModalCreateProduct, setShowModalCreateProduct] = useState(false);
+    const [showModalDetailProduct, setShowModalDetailProduct] = useState(false);
+    const [showModalDeleteProduct, setShowModalDeleteProduct] = useState(false);
     const [filters, setFilters] = useState({
         name: "",
         page: 0,
@@ -39,7 +36,7 @@ function ProductListScreen(props) {
         }
         fetchData();
         setIsUpdated(false);
-    }, [filters, isUpdated = true]);
+    }, [filters, isUpdated == true]);
 
     const handleDeleteProduct = async () => {
         const res = await productApi.deleteProduct(selectedProduct?.id);
@@ -75,7 +72,7 @@ function ProductListScreen(props) {
                         </div>
                         <div>
                             <AppButton
-                                text="Thêm sản phẩm"
+                                text="Thêm"
                                 className="btn-blue px-3 py-2"
                                 fontSize="0.8rem"
                                 onClick={() => {
@@ -201,6 +198,7 @@ function ProductListScreen(props) {
                 isEditMode={editMode}
                 productInfo={selectedProduct}
                 show={showModalDetailProduct}
+                onExecute={() => setEditMode(!editMode)}
                 onClose={() => {
                     setShowModalDetailProduct(false);
                     setEditMode(false);

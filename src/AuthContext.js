@@ -3,6 +3,8 @@ import {
     removeAxiosAccessToken,
     updateAxiosAccessToken,
 } from "api/axiosClient";
+import categoryApi from "api/categoryApi";
+import inventoryApi from "api/inventoryApi";
 import PreferenceKeys from "general/constants/PreferenceKeys";
 import ToastHelper from "general/helpers/ToastHelper";
 import UserHelper from "general/helpers/UserHelper";
@@ -14,13 +16,41 @@ const AuthProvider = ({ children }) => {
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
 
+    const [categoryOptions, setCategoryOptions] = useState([]);
+    const [inventoryOptions, setInventoryOptions] = useState([]);
+
     useEffect(() => {
         setLoggedIn(
             UserHelper.checkToken() && !UserHelper.checkRefreshTokenExpired()
         );
         setUser(UserHelper.getUsername());
-        return () => {
+        return () => {};
+    }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const res_category = await categoryApi.getAllCategories();
+            const res_inventory = await inventoryApi.getAllInventories();
+            let arr_category = [];
+            let arr_inventory = [];
+            for (let i = 0; i < res_category?.length; i++) {
+                arr_category.push({
+                    value: res_category[i].id,
+                    text: res_category[i].code + " - " + res_category[i].name,
+                });
+            }
+            for (let i = 0; i < res_inventory?.length; i++) {
+                arr_inventory.push({
+                    value: res_inventory[i].id,
+                    text: res_inventory[i].code + " - " + res_inventory[i].name,
+                });
+            }
+            setCategoryOptions(arr_category);
+            setInventoryOptions(arr_inventory);
         };
+        fetchData();
+
+        return () => {};
     }, []);
 
     const login = (username, password) => {
@@ -54,11 +84,19 @@ const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, user, login, logout }}>
+        <AuthContext.Provider
+            value={{
+                isLoggedIn,
+                user,
+                categoryOptions,
+                inventoryOptions,
+                login,
+                logout,
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );
 };
 
 export { AuthContext, AuthProvider };
-

@@ -8,7 +8,6 @@ import ToastHelper from "general/helpers/ToastHelper";
 
 ModalDetailCategory.propTypes = {
     show: PropTypes.bool,
-    close: PropTypes.bool,
     isEditMode: PropTypes.bool,
     updateData: PropTypes.func,
     onClose: PropTypes.func,
@@ -20,7 +19,6 @@ ModalDetailCategory.propTypes = {
 };
 ModalDetailCategory.defaultProps = {
     show: null,
-    close: true,
     isEditMode: false,
     updateData: null,
     onClose: null,
@@ -34,7 +32,6 @@ ModalDetailCategory.defaultProps = {
 function ModalDetailCategory(props) {
     const {
         show,
-        close,
         isEditMode,
         onClose,
         updateData,
@@ -45,6 +42,7 @@ function ModalDetailCategory(props) {
         categoryInfo,
     } = props;
     const [editMode, setEditMode] = useState(false);
+    const [close, setClose] = useState(false);
     const [categoryOnChange, setCategoryOnChange] = useState({});
 
     useEffect(() => {
@@ -53,13 +51,10 @@ function ModalDetailCategory(props) {
             name: categoryInfo.name,
             description: categoryInfo.description,
         });
-        return () => {};
-    }, [categoryInfo]);
-
-    useEffect(() => {
         setEditMode(isEditMode);
+        isEditMode ? setClose(true) : setClose(false);
         return () => {};
-    }, [isEditMode]);
+    }, [categoryInfo, isEditMode]);
 
     const handelEditCategory = async () => {
         try {
@@ -77,6 +72,9 @@ function ModalDetailCategory(props) {
                     updateData(true);
                 }
             }
+            if (onExecute) {
+                onExecute();
+            }
             setEditMode(!editMode);
         } catch (error) {
             if (error.response.data === "Already exist code")
@@ -87,7 +85,7 @@ function ModalDetailCategory(props) {
     return (
         <DialogModal
             show={show}
-            close={false}
+            close={close}
             onClose={onClose}
             icon={icon}
             description={description}

@@ -194,6 +194,7 @@ function InventoryListScreen(props) {
                 isEditMode={editMode}
                 inventoryInfo={selectedInventory}
                 show={showModalDetailInventory}
+                onExecute={() => setEditMode(!editMode)}
                 onClose={() => {
                     setShowModalDetailInventory(false);
                     setEditMode(false);

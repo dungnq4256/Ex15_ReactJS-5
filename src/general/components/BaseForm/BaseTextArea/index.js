@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import "./style.scss";
 
 BaseTextArea.propTypes = {
     name: PropTypes.string.isRequired,
@@ -28,7 +29,7 @@ BaseTextArea.defaultProps = {
     disabled: false,
     text: "",
 
-    className: "form-group",
+    className: "",
 };
 
 function BaseTextArea(props) {
@@ -49,9 +50,8 @@ function BaseTextArea(props) {
     } = props;
 
     const [isError, setError] = useState(false);
-
     const handleOnBlur = () => {
-        if (value.trim() === "") {
+        if (value === null || value.trim() === "") {
             setError(true);
         } else {
             setError(false);
@@ -59,7 +59,13 @@ function BaseTextArea(props) {
     };
     return (
         <div className="BaseTextArea w-100">
-            <div className={className}>
+            <div
+                className={`BaseTextArea_Group rounded input-group ${
+                    !disabled && "bg-white"
+                }  d-flex flex-row  justify-content-between ${
+                    disabled && "BaseTextArea_Disabled"
+                } ${isError && "BaseTextArea_Group-invalid"} ${className}`}
+            >
                 {label && (
                     <label className="text-remaining" htmlFor={name}>
                         {label}
@@ -67,25 +73,24 @@ function BaseTextArea(props) {
                 )}
                 <textarea
                     id={name}
-                    className={`form-control form-control-sm ${
-                        isError ? "is-invalid" : ""
-                    } ${resizable ? "" : "resize-none"}`}
+                    className={`ps-3 py-2 BaseTextArea_Input w-100 rounded border-0 bg-transparent ${
+                        resizable ? "" : "resize-none"
+                    }`}
                     rows={rows}
-                    value={value}
+                    value={value ?? ""}
                     onChange={onChange}
                     disabled={disabled}
                     placeholder={placeholder}
                     onBlur={handleOnBlur}
                 ></textarea>
-
-                {isError && (
-                    <div className="mt-1 ms-2">
-                        <div className="err-text-field">{error}</div>
-                    </div>
-                )}
-
-                <span className="form-text text-muted">{text}</span>
             </div>
+            {isError && (
+                <div className="mt-1">
+                    <div className="err-text-field">{error}</div>
+                </div>
+            )}
+
+            <span className="form-text text-muted">{text}</span>
         </div>
     );
 }

@@ -8,7 +8,6 @@ import ToastHelper from "general/helpers/ToastHelper";
 
 ModalDetailInventory.propTypes = {
     show: PropTypes.bool,
-    close: PropTypes.bool,
     isEditMode: PropTypes.bool,
     updateData: PropTypes.func,
     onClose: PropTypes.func,
@@ -20,7 +19,6 @@ ModalDetailInventory.propTypes = {
 };
 ModalDetailInventory.defaultProps = {
     show: null,
-    close: true,
     isEditMode: false,
     updateData: null,
     onClose: null,
@@ -34,7 +32,6 @@ ModalDetailInventory.defaultProps = {
 function ModalDetailInventory(props) {
     const {
         show,
-        close,
         isEditMode,
         onClose,
         updateData,
@@ -45,6 +42,7 @@ function ModalDetailInventory(props) {
         inventoryInfo,
     } = props;
     const [editMode, setEditMode] = useState(false);
+    const [close, setClose] = useState(false);
     const [inventoryOnChange, setInventoryOnChange] = useState({});
 
     useEffect(() => {
@@ -53,13 +51,10 @@ function ModalDetailInventory(props) {
             name: inventoryInfo.name,
             address: inventoryInfo.address,
         });
-        return () => {};
-    }, [inventoryInfo]);
-
-    useEffect(() => {
         setEditMode(isEditMode);
+        isEditMode ? setClose(true) : setClose(false);
         return () => {};
-    }, [isEditMode]);
+    }, [inventoryInfo, isEditMode]);
 
     const handelEditInventory = async () => {
         try {
@@ -77,6 +72,9 @@ function ModalDetailInventory(props) {
                     updateData(true);
                 }
             }
+            if (onExecute) {
+                onExecute();
+            }
             setEditMode(!editMode);
         } catch (error) {
             if (error.response.data === "Already exist code")
@@ -87,7 +85,7 @@ function ModalDetailInventory(props) {
     return (
         <DialogModal
             show={show}
-            close={false}
+            close={close}
             onClose={onClose}
             icon={icon}
             description={description}

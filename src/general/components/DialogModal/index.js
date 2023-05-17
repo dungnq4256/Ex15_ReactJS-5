@@ -9,6 +9,7 @@ DialogModal.propTypes = {
     close: PropTypes.bool,
     onClose: PropTypes.func,
     icon: PropTypes.string,
+    size: PropTypes.string,
     description: PropTypes.string,
     onExecute: PropTypes.func,
     title: PropTypes.string,
@@ -21,6 +22,7 @@ DialogModal.defaultProps = {
     close: true,
     onClose: null,
     icon: "",
+    size: "md",
     description: "",
     onExecute: null,
     title: "",
@@ -34,6 +36,7 @@ function DialogModal(props) {
         close,
         onClose,
         icon,
+        size,
         description,
         onExecute,
         title,
@@ -55,7 +58,7 @@ function DialogModal(props) {
             show={show}
             onHide={handleClose}
             centered
-            size="md"
+            size={size}
             className="p-0"
         >
             {/* modal header */}

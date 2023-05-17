@@ -7,6 +7,11 @@ const inventoryApi = {
         return axiosClient.get(url, {params});
     },
 
+    getAllInventories: () => {
+        const url = '/admin/inventories/all'
+        return axiosClient.get(url);
+    },
+
     getInventoryDetail: (id) => {
         const url = '/admin/inventories/' + id;
         return axiosClient.get(url);

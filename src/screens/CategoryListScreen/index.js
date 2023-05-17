@@ -200,6 +200,7 @@ function CategoryListScreen(props) {
                 isEditMode={editMode}
                 categoryInfo={selectedCategory}
                 show={showModalDetailCategory}
+                onExecute={() => setEditMode(!editMode)}
                 onClose={() => {
                     setShowModalDetailCategory(false);
                     setEditMode(false);

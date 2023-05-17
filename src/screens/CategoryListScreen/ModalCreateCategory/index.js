@@ -48,8 +48,22 @@ function ModalCreateCategory(props) {
             description: "",
         });
     };
+    const handleClose = () => {
+        resetText();
+        if (onClose) {
+            onClose();
+        }
+    };
     const handelCreateCategory = async () => {
         try {
+            if (
+                categoryOnChange.code === "" ||
+                categoryOnChange.name === "" ||
+                categoryOnChange.description === ""
+            ) {
+                ToastHelper.showError("Vui lòng nhập đủ các trường dữ liệu!");
+                return;
+            }
             const res = await categoryApi.createCategory(categoryOnChange);
             if (res.status === 200)
                 ToastHelper.showSuccess("Thêm danh mục thành công!");
@@ -64,7 +78,7 @@ function ModalCreateCategory(props) {
     return (
         <DialogModal
             show={show}
-            onClose={onClose}
+            onClose={handleClose}
             icon={icon}
             description={description}
             onExecute={handelCreateCategory}

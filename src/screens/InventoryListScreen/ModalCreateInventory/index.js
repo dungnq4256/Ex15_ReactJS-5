@@ -48,8 +48,24 @@ function ModalCreateInventory(props) {
             address: "",
         });
     };
+
+    const handleClose = () => {
+        resetText();
+        if (onClose) {
+            onClose();
+        }
+    };
+
     const handelCreateInventory = async () => {
         try {
+            if (
+                inventoryOnChange.code === "" ||
+                inventoryOnChange.name === "" ||
+                inventoryOnChange.address === ""
+            ) {
+                ToastHelper.showError("Vui lòng nhập đủ các trường dữ liệu!");
+                return;
+            }
             const res = await inventoryApi.createInventory(inventoryOnChange);
             if (res.status === 200)
                 ToastHelper.showSuccess("Thêm kho thành công!");
@@ -64,7 +80,7 @@ function ModalCreateInventory(props) {
     return (
         <DialogModal
             show={show}
-            onClose={onClose}
+            onClose={handleClose}
             icon={icon}
             description={description}
             onExecute={handelCreateInventory}
